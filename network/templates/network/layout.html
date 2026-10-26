@@ -1,0 +1,71 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Social Network{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="{% static 'network/styles.css' %}" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="sidebar-brand" href="{% url 'index' %}">
+          <span class="brand-icon">🌐</span><span class="brand-text">Network</span>
+        </a>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link" href="{% url 'index' %}">
+            <span class="sidebar-icon">🏠</span><span>Home</span>
+          </a>
+          {% if user.is_authenticated %}
+          <a class="sidebar-link" href="{% url 'following' %}">
+            <span class="sidebar-icon">👥</span><span>Following</span>
+          </a>
+          <a class="sidebar-link" href="{% url 'profile' user.username %}">
+            <span class="sidebar-icon">👤</span><span>Profile</span>
+          </a>
+          <a class="sidebar-link" href="{% url 'edit_profile' %}">
+            <span class="sidebar-icon">⚙️</span><span>Edit Profile</span>
+          </a>
+          {% else %}
+          <a class="sidebar-link" href="{% url 'login' %}">
+            <span class="sidebar-icon">🔑</span><span>Log In</span>
+          </a>
+          {% endif %}
+        </nav>
+        {% if user.is_authenticated %}
+        <div class="sidebar-user">
+          {% if user.avatar %}
+          <img class="sidebar-avatar" src="{{ user.avatar }}" alt="{{ user.username }}" />
+          {% else %}
+          <span class="sidebar-avatar avatar-letter">{{ user.username|first|upper }}</span>
+          {% endif %}
+          <div class="sidebar-user-info">
+            <strong>{{ user.username }}</strong>
+            <a href="{% url 'logout' %}" class="sidebar-logout">Log Out</a>
+          </div>
+        </div>
+        {% else %}
+        <div class="sidebar-user">
+          <a href="{% url 'register' %}" class="btn btn-post btn-block">Create account</a>
+        </div>
+        {% endif %}
+      </aside>
+
+      <main class="page-content">{% block body %}{% endblock %}</main>
+    </div>
+
+    <script src="{% static 'network/network.js' %}"></script>
+  </body>
+</html>

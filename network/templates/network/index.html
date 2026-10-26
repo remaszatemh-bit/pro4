@@ -1,0 +1,38 @@
+{% extends "network/layout.html" %} {% block body %} {% if user.is_authenticated %}
+<div class="compose-card">
+  <div class="compose-header">
+    {% if user.avatar %}
+    <img class="compose-avatar avatar-img" src="{{ user.avatar }}" alt="{{ user.username }}" />
+    {% else %}
+    <span class="compose-avatar">{{ user.username|first|upper }}</span>
+    {% endif %}
+    <h3>New Post</h3>
+  </div>
+  <form id="new-post-form">
+    <textarea id="new-post-content" class="form-control" rows="3" placeholder="What's on your mind?" maxlength="280"></textarea>
+    <div class="media-fields">
+      <label class="file-pick">
+        📷 <span id="image-file-label">Add image</span>
+        <input type="file" id="new-post-image" accept="image/jpeg,image/png,image/gif,image/webp" hidden />
+      </label>
+      <label class="file-pick">
+        🎬 <span id="video-file-label">Add video</span>
+        <input type="file" id="new-post-video" accept="video/mp4,video/webm,video/ogg" hidden />
+      </label>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-2">
+      <small id="char-count" class="char-count">280</small>
+      <button type="submit" class="btn btn-post">Post</button>
+    </div>
+  </form>
+</div>
+{% endif %}
+
+<div class="feed-header">
+  <h3>All Posts</h3>
+</div>
+<div id="posts" data-feed="all"></div>
+<nav class="feed-pagination">
+  <ul class="pagination" id="pagination"></ul>
+</nav>
+{% endblock %}

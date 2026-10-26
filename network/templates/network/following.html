@@ -1,0 +1,13 @@
+{% extends "network/layout.html" %}
+
+{% block title %}Following | Network{% endblock %}
+
+{% block body %}
+<div class="feed-header">
+  <h3>Following</h3>
+</div>
+<div id="posts" data-feed="following"></div>
+<nav class="feed-pagination">
+  <ul class="pagination" id="pagination"></ul>
+</nav>
+{% endblock %}

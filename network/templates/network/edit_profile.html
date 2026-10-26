@@ -1,0 +1,40 @@
+{% extends "network/layout.html" %} {% block title %}Edit Profile | Network{% endblock %} {% block body %}
+<div class="compose-card">
+  <div class="compose-header">
+    <span class="compose-avatar">⚙️</span>
+    <h3>Edit Profile</h3>
+  </div>
+  <form method="post" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label class="form-label">Bio <small class="text-muted">(max 160 characters)</small></label>
+    <textarea name="bio" class="form-control" rows="2" maxlength="160" placeholder="Software engineer | Tech enthusiast">{{ profile_user.bio }}</textarea>
+
+    <label class="form-label mt-3">Avatar image <small class="text-muted">(JPG/PNG/GIF)</small></label>
+    <label class="file-pick">
+      📷 <span id="avatar-label">{% if profile_user.avatar %}Replace avatar{% else %}Choose avatar{% endif %}</span>
+      <input type="file" name="avatar" id="avatar-input" accept="image/jpeg,image/png,image/gif,image/webp" hidden />
+    </label>
+
+    <div class="mt-2">
+      <label class="form-label mt-3">Cover photo <small class="text-muted">(wide image)</small></label>
+      <label class="file-pick">
+        🖼️ <span id="cover-label">{% if profile_user.cover %}Replace cover{% else %}Choose cover{% endif %}</span>
+        <input type="file" name="cover" id="cover-input" accept="image/jpeg,image/png,image/gif,image/webp" hidden />
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-post mt-4">Save Changes</button>
+  </form>
+</div>
+
+<script>
+  ["avatar", "cover"].forEach((kind) => {
+    const input = document.getElementById(kind + "-input");
+    const label = document.getElementById(kind + "-label");
+    input.addEventListener("change", () => {
+      if (input.files.length) label.textContent = "✓ " + input.files[0].name;
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "network/layout.html" %}
+
+{% block title %}{{ profile_user.username }} | Network{% endblock %}
+
+{% block body %}
+<div class="profile-header">
+  {% if profile_user.cover %}
+  <div class="profile-cover" style="background-image:url('{{ profile_user.cover }}')"></div>
+  {% else %}
+  <div class="profile-cover"></div>
+  {% endif %}
+  <div class="profile-info">
+    {% if profile_user.avatar %}
+    <img class="profile-avatar avatar-img" src="{{ profile_user.avatar }}" alt="{{ profile_user.username }}" />
+    {% else %}
+    <span class="profile-avatar">{{ profile_user.username|first|upper }}</span>
+    {% endif %}
+    <div class="profile-meta">
+      <h2>{{ profile_user.username }}</h2>
+      {% if profile_user.bio %}
+      <p class="profile-bio">{{ profile_user.bio }}</p>
+      {% endif %}
+      <p class="profile-stats">
+        <span><strong id="followers-count">{{ followers }}</strong> Followers</span>
+        <span class="stat-sep">·</span>
+        <span><strong id="following-count">{{ following_count }}</strong> Following</span>
+      </p>
+    </div>
+    {% if user.is_authenticated and user == profile_user %}
+    <a href="{% url 'edit_profile' %}" class="btn btn-follow">Edit Profile</a>
+    {% elif user.is_authenticated %}
+    <button id="follow-btn"
+            class="btn btn-follow {% if is_following %}following-active{% endif %}"
+            data-username="{{ profile_user.username }}">
+      {% if is_following %}Unfollow{% else %}Follow{% endif %}
+    </button>
+    {% endif %}
+  </div>
+</div>
+
+<div class="feed-header">
+  <h3>Posts</h3>
+</div>
+<div id="posts" data-feed="profile" data-username="{{ profile_user.username }}"></div>
+<nav class="feed-pagination">
+  <ul class="pagination" id="pagination"></ul>
+</nav>
+{% endblock %}
